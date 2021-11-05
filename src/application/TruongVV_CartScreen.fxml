@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="667.0" layoutX="17.0" layoutY="90.0" stroke="#0fa4d9" strokeType="INSIDE" width="973.0" />
+      <ImageView fitHeight="84.0" fitWidth="67.0" layoutX="71.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../Pictures/Saved%20Pictures/Nhà_giả_kim_(sách).jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="116.0" layoutY="21.0" text="CART_TRUONGVV" textFill="#0cb9bc">
+         <font>
+            <Font name="System Bold" size="29.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="134.0" fitWidth="141.0" layoutX="39.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../Pictures/harryPotter.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="153.0" layoutY="126.0" prefHeight="43.0" prefWidth="108.0" text="Harry Potter">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="153.0" layoutY="175.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="98.0" text="Delete" />
+      <Label layoutX="755.0" layoutY="148.0" text="988 d" textFill="#0998e4">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="755.0" layoutY="175.0" text="VND" textFill="#0998e4">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField layoutX="833.0" layoutY="163.0" />
+      <Label layoutX="1037.0" layoutY="108.0" prefHeight="17.0" prefWidth="220.0" text="Subtotal : 1976 d">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1037.0" layoutY="167.0" text="Amount: 2173 d">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="1265.0" layoutY="172.0" text="VAT = 10%" textFill="#ec0404">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Button layoutX="1039.0" layoutY="237.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="274.0" style="-fx-background-color: red;" text="Place Order" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
