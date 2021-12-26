@@ -2,8 +2,6 @@ package views.screen;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
@@ -16,7 +14,6 @@ public class FXMLScreenHandler {
 	protected AnchorPane content;
 
 	public FXMLScreenHandler(String screenPath) throws IOException {
-		System.out.println("path " + getClass().getResource(screenPath));
 		this.loader = new FXMLLoader(getClass().getResource(screenPath));
 		// Set this class as the controller
 		this.loader.setController(this);

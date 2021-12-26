@@ -20,49 +20,47 @@ import java.util.logging.Logger;
 import entity.payment.CreditCard;
 import entity.payment.PaymentTransaction;
 
+/**
+ * Class provides methods to send request to server and receive data
+ * @author dattq.180042
+ * @version 1.0
+ */
 public class API {
 
+	/**
+	 * Thuộc tính giúp format ngày tháng theo định dạng
+	 */
 	public static DateFormat DATE_FORMATER = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	private static Logger LOGGER = Utils.getLogger(Utils.class.getName());
+	/**
+	 * Thuộc tính giúp log thông tin ra console
+	 */
+	private static final Logger LOGGER = Utils.getLogger(Utils.class.getName());
 
-	public static String get(String url, String token) throws Exception {
+	/**
+	 * Thiết lập connection từ server
+	 * @param url : Đường dẫn tới server cần request
+	 * @param method : Giao thức tới API
+	 * @param token : Đoạn code cần cung cấp để xác thực người dùng
+	 * @return connection
+	 */
+	private static HttpURLConnection setupConnection(String url, String method, String token) throws IOException{
 		LOGGER.info("Request URL: " + url + "\n");
 		URL line_api_url = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) line_api_url.openConnection();
 		conn.setDoInput(true);
 		conn.setDoOutput(true);
-		conn.setRequestMethod("GET");
+		conn.setRequestMethod(method);
 		conn.setRequestProperty("Content-Type", "application/json");
 		conn.setRequestProperty("Authorization", "Bearer " + token);
-		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		String inputLine;
-		StringBuilder respone = new StringBuilder(); // ising StringBuilder for the sake of memory and performance
-		while ((inputLine = in.readLine()) != null)
-			System.out.println(inputLine);
-		respone.append(inputLine + "\n");
-		in.close();
-		LOGGER.info("Respone Info: " + respone.substring(0, respone.length() - 1).toString());
-		return respone.substring(0, respone.length() - 1).toString();
+		return conn;
 	}
 
-	int var;
-
-	public static String post(String url, String data
-//			, String token
-	) throws IOException {
-		allowMethods("PATCH");
-		URL line_api_url = new URL(url);
-		String payload = data;
-		LOGGER.info("Request Info:\nRequest URL: " + url + "\n" + "Payload Data: " + payload + "\n");
-		HttpURLConnection conn = (HttpURLConnection) line_api_url.openConnection();
-		conn.setDoInput(true);
-		conn.setDoOutput(true);
-		conn.setRequestMethod("PATCH");
-		conn.setRequestProperty("Content-Type", "application/json");
-//		conn.setRequestProperty("Authorization", "Bearer " + token);
-		Writer writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-		writer.write(payload);
-		writer.close();
+	/**
+	 * Đọc dữ liệu trả về từ server
+	 * @param conn: connection to server
+	 * @return response : Phẩn hồi tới server
+	 */
+	private static String readResponse(HttpURLConnection conn) throws IOException {
 		BufferedReader in;
 		String inputLine;
 		if (conn.getResponseCode() / 100 == 2) {
@@ -74,8 +72,39 @@ public class API {
 		while ((inputLine = in.readLine()) != null)
 			response.append(inputLine);
 		in.close();
-		LOGGER.info("Respone Info: " + response.toString());
+		LOGGER.info("Response Info: " + response);
 		return response.toString();
+	}
+
+	/**
+	 * Phương thức giúp gọi các API đang GET
+	 * @param url : Đường dẫn tới server cần request
+	 * @param token : Đoạn code xác thực user
+	 * @return response: Phản hồi từ server
+	 */
+	public static String get(String url, String token) throws Exception {
+		HttpURLConnection conn = setupConnection(url, "GET", token);
+		return readResponse(conn);
+	}
+
+	/**
+	 * Phương thức gọi các API đang POST (thanh toán, ...)
+	 * @param url : Đường dẫn tới server
+	 * @param data : Dữ liệu cần xử lý
+	 * @param token : Mã xác thực
+	 * @return respone: Phản hồi từ server
+	 */
+	public static String post(String url, String data, String token) throws IOException {
+
+		allowMethods("PATCH");
+
+		HttpURLConnection conn = setupConnection(url, "PATCH", token);
+
+		Writer writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+		writer.write(data);
+		writer.close();
+
+		return readResponse(conn);
 	}
 
 	private static void allowMethods(String... methods) {

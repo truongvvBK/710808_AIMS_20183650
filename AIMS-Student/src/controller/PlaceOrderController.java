@@ -17,7 +17,7 @@ import views.screen.popup.PopupScreen;
 
 /**
  * This class controls the flow of place order usecase in our AIMS project
- * @author TruongVV
+ * @author nguyenlm
  */
 public class PlaceOrderController extends BaseController{
 
@@ -49,9 +49,9 @@ public class PlaceOrderController extends BaseController{
         Order order = new Order();
         for (Object object : Cart.getCart().getListMedia()) {
             CartMedia cartMedia = (CartMedia) object;
-            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(),
-                    cartMedia.getQuantity(),
-                    cartMedia.getPrice());
+            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), 
+                                                   cartMedia.getQuantity(), 
+                                                   cartMedia.getPrice());    
             order.getlstOrderMedia().add(orderMedia);
         }
         return order;
@@ -77,13 +77,13 @@ public class PlaceOrderController extends BaseController{
         LOGGER.info(info.toString());
         validateDeliveryInfo(info);
     }
-
+    
     /**
-     * The method validates the info
-     * @param info
-     * @throws InterruptedException
-     * @throws IOException
-     */
+   * The method validates the info
+   * @param info
+   * @throws InterruptedException
+   * @throws IOException
+   */
     public void validateDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
         if(!validateName(info.get("name"))){
             throw new InterruptedException("Name is invalid");
@@ -103,23 +103,23 @@ public class PlaceOrderController extends BaseController{
     }
 
     public boolean validatePhoneNumber(String phoneNumber) {
-        if(phoneNumber.length() != PHONE_NUMBER_LENGTH) return false;
-        if(!phoneNumber.startsWith("0")) return false;
-        try{
-            Integer.parseInt(phoneNumber);
+    	if(phoneNumber.length() != PHONE_NUMBER_LENGTH) return false;
+    	if(!phoneNumber.startsWith("0")) return false;
+    	try{
+    	    Integer.parseInt(phoneNumber);
         } catch (Exception e) {
-            return false;
+    	    return false;
         }
-        return true;
+    	return true;
     }
-
+    
     public boolean validateName(String name) {
         if(name == null || name.isEmpty() ){
             return false;
         }
         return name.matches("^[a-zA-Z\\s]*$");
     }
-
+    
     public boolean validateAddress(String address) {
         if(address == null || address.isEmpty()) {
             return false;
@@ -135,21 +135,14 @@ public class PlaceOrderController extends BaseController{
     }
 
 
+    private final ShippingFeeCalculator shipFeeCalculator = new AlternativeWeightShipFee();
     /**
      * This method calculates the shipping fees of order
      * @param order
      * @return shippingFee
      */
     public int calculateShippingFee(Order order, boolean rushOrder){
-        Random rand = new Random();
-        int fees = (int)( ( (rand.nextFloat()*10)/100 ) * order.getAmount() );
-        if(rushOrder) {
-            fees = (int) (fees * (1 + RUSH_ORDER_FEE_INCREASE_PERCENT));
-        }
-        LOGGER.info("Order Amount: " + order.getAmount() + " -- Shipping Fees: " + fees);
-        return fees;
+        return shipFeeCalculator.calculateShippingFee(order, rushOrder);
     }
-
-    private final double RUSH_ORDER_FEE_INCREASE_PERCENT = 0.3;
 
 }
